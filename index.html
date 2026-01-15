@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Beauty Spa - Invoice System</title>
+    <link rel="stylesheet" href="style.css" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;600&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <header>
+      <div class="logo-wrapper">
+        <img
+          src="logo.png"
+          alt="Logo"
+          onerror="this.parentElement.style.display='none'"
+        />
+      </div>
+      <h1>BEAUTY SPA</h1>
+    </header>
+
+    <div class="container">
+      <div class="section input-card">
+        <input
+          id="customerName"
+          placeholder="Tên khách hàng..."
+          oninput="syncInfo()"
+        />
+        <input
+          id="customerPhone"
+          placeholder="Số điện thoại..."
+          oninput="syncInfo()"
+        />
+        <textarea
+          id="note"
+          placeholder="Ghi chú hoá đơn..."
+          oninput="syncInfo()"
+        ></textarea>
+      </div>
+
+      <div id="menu"></div>
+
+      <div id="billCapture" class="bill-output">
+        <div class="bill-header">
+          <div class="logo-wrapper small">
+            <img src="logo.png" alt="Logo" />
+          </div>
+          <h2>HOÁ ĐƠN DỊCH VỤ</h2>
+          <div id="billDate"></div>
+        </div>
+
+        <div class="customer-info-preview">
+          <div id="pName">Khách hàng:</div>
+          <div id="pPhone">SĐT:</div>
+          <div id="pNote"></div>
+        </div>
+
+        <div id="billItems"></div>
+
+        <div class="total-row">
+          <span class="label">TỔNG THANH TOÁN</span>
+          <span class="amount"><span id="total">0</span> VND</span>
+        </div>
+      </div>
+
+      <div class="actions">
+        <button class="btn-undo" onclick="undoDelete()">Hoàn tác</button>
+        <button class="btn-reset" onclick="resetBill()">Xoá hết</button>
+        <button class="btn-capture" onclick="captureBill()">
+          Xuất Hình Ảnh
+        </button>
+      </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+    <script src="script.js"></script>
+  </body>
+</html>

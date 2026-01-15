@@ -1,0 +1,227 @@
+:root {
+  --bg: #0e0e0e;
+  --card: #1a1a1a;
+  --gold: #d4af37;
+  --text: #f5f5f5;
+  --muted: #aaa;
+  --danger: #ff5c5c;
+}
+* {
+  box-sizing: border-box;
+  font-family: "Be Vietnam Pro", sans-serif;
+}
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  padding-bottom: 50px;
+}
+
+/* LOGO NỀN TRẮNG */
+.logo-wrapper {
+  background: #fff;
+  display: inline-block;
+  padding: 10px 20px;
+  border-radius: 12px;
+  margin-bottom: 10px;
+  border: 1px solid rgba(212, 175, 55, 0.3);
+}
+.logo-wrapper img {
+  height: 60px;
+  display: block;
+  object-fit: contain;
+}
+.logo-wrapper.small img {
+  height: 40px;
+}
+
+header {
+  text-align: center;
+  padding: 20px 0;
+}
+header h1 {
+  margin: 0;
+  font-size: 20px;
+  color: var(--gold);
+  letter-spacing: 2px;
+  text-transform: uppercase;
+}
+
+.container {
+  max-width: 500px;
+  margin: 0 auto;
+  padding: 15px;
+}
+.input-card {
+  background: var(--card);
+  padding: 15px;
+  border-radius: 12px;
+  margin-bottom: 20px;
+  border: 1px solid #333;
+}
+.input-card input,
+.input-card textarea {
+  width: 100%;
+  padding: 10px;
+  border-radius: 8px;
+  border: 1px solid #333;
+  background: #252525;
+  color: #fff;
+  margin-bottom: 8px;
+  outline: none;
+}
+
+.section-title {
+  color: var(--gold);
+  margin: 25px 0 10px;
+  text-transform: uppercase;
+  font-weight: 600;
+  border-left: 3px solid var(--gold);
+  padding-left: 10px;
+}
+
+/* MENU & CONTROLS */
+.menu-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+.menu-item {
+  background: var(--card);
+  padding: 12px;
+  border-radius: 12px;
+  border: 1px solid #222;
+}
+.menu-item .name {
+  font-size: 13px;
+  margin-bottom: 5px;
+  display: block;
+  min-height: 32px;
+}
+.menu-item .price {
+  color: var(--gold);
+  font-weight: 600;
+  font-size: 14px;
+}
+
+.controls {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 10px;
+}
+.btn-qty {
+  background: #333;
+  border: none;
+  color: #fff;
+  width: 28px;
+  height: 28px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+}
+.btn-qty.plus {
+  background: var(--gold);
+  color: #000;
+}
+.qty-val {
+  font-weight: bold;
+  color: var(--gold);
+  min-width: 20px;
+  text-align: center;
+}
+
+/* BILL OUTPUT */
+.bill-output {
+  background: var(--card);
+  padding: 20px;
+  border-radius: 15px;
+  border: 1px solid #333;
+  margin-top: 30px;
+}
+.bill-header {
+  text-align: center;
+  border-bottom: 1px dashed #444;
+  padding-bottom: 15px;
+  margin-bottom: 15px;
+}
+.bill-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 0;
+  border-bottom: 1px solid #282828;
+}
+.bill-item-info {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.bill-item-name {
+  font-size: 14px;
+}
+.bill-item-sub {
+  font-size: 11px;
+  color: var(--muted);
+}
+.bill-item-right {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.bill-price {
+  font-weight: 600;
+  color: var(--gold);
+}
+
+.total-row {
+  margin-top: 15px;
+  text-align: right;
+  border-top: 2px solid var(--gold);
+  padding-top: 10px;
+}
+.total-row .amount {
+  font-size: 24px;
+  color: var(--gold);
+  font-weight: bold;
+  display: block;
+}
+
+.actions {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 8px;
+  margin-top: 20px;
+}
+.actions button {
+  padding: 12px;
+  border: none;
+  border-radius: 8px;
+  font-weight: bold;
+  cursor: pointer;
+}
+.btn-undo {
+  background: #333;
+  color: #ccc;
+}
+.btn-reset {
+  background: #422;
+  color: #fbb;
+}
+.btn-capture {
+  background: var(--gold);
+  color: #000;
+}
+
+.no-capture {
+  display: none !important;
+}
+.capture-qty-text {
+  display: none;
+  font-size: 13px;
+  color: var(--muted);
+}
