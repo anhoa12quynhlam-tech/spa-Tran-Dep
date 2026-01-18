@@ -141,7 +141,7 @@ function renderMenu() {
 
     const header = document.createElement("div");
     header.className = "accordion-header";
-    header.innerHTML = `<h2 class="gold-glow" style="margin:0; font-size:16px;">${g.group}</h2>`;
+    header.innerHTML = `<h2 class="gold-glow" style="margin:0; font-size:20px;">${g.group}</h2>`;
 
     header.onclick = () => {
       document.querySelectorAll(".accordion-item").forEach((el) => {
@@ -161,7 +161,7 @@ function renderMenu() {
 
       d.innerHTML = `
         <div style="flex:1">
-            <div style="font-size:14px">${i.name}</div>
+            <div style="font-size:18px">${i.name}</div>
             <div style="color:#d4af37; font-size:12px">${
               i.price ?? i.min + "-" + i.max
             }k</div>
