@@ -111,173 +111,235 @@ const menuData = [
 let bill = [];
 let lastDeleted = null;
 
-function init() {
-  renderMenu();
-  syncInfo();
-}
+// --- TÍNH NĂNG MỚI: TÌM KIẾM ---
+function filterMenu() {
+  const query = document.getElementById("menuSearch").value.toLowerCase();
+  const menuItems = document.querySelectorAll(".menu-item");
+  const sections = document.querySelectorAll(".accordion-item");
 
-function renderMenu() {
-  const container = document.getElementById("menu");
-  container.innerHTML = "";
-  menuData.forEach((group) => {
-    container.innerHTML += `<div class="section-title">${group.group}</div>`;
-    const grid = document.createElement("div");
-    grid.className = "menu-grid";
-    group.items.forEach((item) => {
-      const billItem = bill.find((i) => i.name === item.name);
-      const qty = billItem ? billItem.qty : 0;
-      const itemEl = document.createElement("div");
-      itemEl.className = "menu-item";
-      itemEl.innerHTML = `
-                <span class="name">${item.name}</span>
-                <span class="price">${
-                  item.price || item.min + "-" + item.max
-                }</span>
-                <div class="controls">
-                    <button class="btn-qty" onclick="updateQty('${
-                      item.name
-                    }', -1, ${item.price || 0}, ${item.min || 0}, ${
-        item.max || 0
-      })">-</button>
-                    <span class="qty-val">${qty}</span>
-                    <button class="btn-qty plus" onclick="updateQty('${
-                      item.name
-                    }', 1, ${item.price || 0}, ${item.min || 0}, ${
-        item.max || 0
-      })">+</button>
-                </div>`;
-      grid.appendChild(itemEl);
-    });
-    container.appendChild(grid);
-  });
-}
-
-function updateQty(name, delta, price, min, max) {
-  let item = bill.find((i) => i.name === name);
-  if (delta === 1) {
-    if (!item) {
-      let p =
-        price || parseInt(prompt(`Nhập giá cho ${name} (${min}-${max}k):`));
-      if (isNaN(p)) return;
-      bill.push({ name: name, price: p, qty: 1 });
+  menuItems.forEach((item) => {
+    const text = item.querySelector("div:first-child").innerText.toLowerCase();
+    if (text.includes(query)) {
+      item.style.display = "flex";
     } else {
-      item.qty++;
+      item.style.display = "none";
     }
-  } else if (item) {
-    item.qty--;
-    if (item.qty <= 0) {
-      lastDeleted = bill.splice(bill.indexOf(item), 1)[0];
-    }
-  }
-  renderMenu();
-  renderBill();
-}
-
-function renderBill() {
-  const container = document.getElementById("billItems");
-  container.innerHTML = "";
-  let total = 0;
-
-  bill.forEach((item) => {
-    const sub = item.price * item.qty;
-    total += sub;
-
-    const row = document.createElement("div");
-    row.className = "bill-item";
-    // SỬA QUAN TRỌNG: Đã xóa class "no-capture" ở đây và thay bằng "bill-controls" để nút hiện ra
-    row.innerHTML = `
-            <div class="bill-item-info">
-                <span class="bill-item-name">${item.name}</span>
-                <span class="bill-item-sub">${(
-                  item.price * 1000
-                ).toLocaleString()}đ / món</span>
-            </div>
-            <div class="bill-item-right">
-                <div class="bill-controls" style="display: flex; align-items: center; gap: 8px;">
-                    <button class="btn-qty" style="width:24px; height:24px; line-height:1;" onclick="updateQty('${
-                      item.name
-                    }', -1)">-</button>
-                    <span class="qty-val" style="font-size:14px; min-width:15px; text-align:center;">${
-                      item.qty
-                    }</span>
-                    <button class="btn-qty plus" style="width:24px; height:24px; line-height:1;" onclick="updateQty('${
-                      item.name
-                    }', 1)">+</button>
-                </div>
-                <span class="capture-qty-text" style="display:none; color:#aaa; font-weight:bold;">x${
-                  item.qty
-                }</span>
-                <span class="bill-price" style="min-width: 80px; text-align: right;">${(
-                  sub * 1000
-                ).toLocaleString()}đ</span>
-            </div>`;
-    container.appendChild(row);
   });
 
-  document.getElementById("total").innerText = (total * 1000).toLocaleString();
-  syncInfo();
+  if (query.length > 0) {
+    sections.forEach((s) => s.classList.add("active"));
+  }
+}
+
+// --- RENDER MENU GỐC ---
+function renderMenu() {
+  const m = document.getElementById("menu");
+  m.innerHTML = "";
+  menuData.forEach((g) => {
+    const item = document.createElement("div");
+    item.className = "accordion-item";
+
+    const header = document.createElement("div");
+    header.className = "accordion-header";
+    header.innerHTML = `<h2 class="gold-glow" style="margin:0; font-size:16px;">${g.group}</h2>`;
+
+    header.onclick = () => {
+      document.querySelectorAll(".accordion-item").forEach((el) => {
+        if (el !== item) el.classList.remove("active");
+      });
+      item.classList.toggle("active");
+    };
+
+    const content = document.createElement("div");
+    content.className = "accordion-content";
+
+    g.items.forEach((i) => {
+      const d = document.createElement("div");
+      d.className = "menu-item";
+      const billItem = bill.find((b) => b.name === i.name);
+      const qty = billItem ? billItem.qty : 0;
+
+      d.innerHTML = `
+        <div style="flex:1">
+            <div style="font-size:14px">${i.name}</div>
+            <div style="color:#d4af37; font-size:12px">${
+              i.price ?? i.min + "-" + i.max
+            }k</div>
+        </div>
+        <div class="qty-controls">
+            <button class="btn-qty" onclick="updateQty('${i.name}', -1, ${
+        i.price || 0
+      }, ${i.min || 0}, ${i.max || 0})">-</button>
+            <span class="qty-val" id="qty-${i.name.replace(
+              /\s+/g,
+              ""
+            )}">${qty}</span>
+            <button class="btn-qty" onclick="updateQty('${i.name}', 1, ${
+        i.price || 0
+      }, ${i.min || 0}, ${i.max || 0})">+</button>
+        </div>
+      `;
+      content.appendChild(d);
+    });
+
+    item.appendChild(header);
+    item.appendChild(content);
+    m.appendChild(item);
+  });
+}
+
+// --- CẬP NHẬT SỐ LƯỢNG ---
+function updateQty(name, change, price, min, max) {
+  const index = bill.findIndex((item) => item.name === name);
+  if (index > -1) {
+    bill[index].qty += change;
+    if (bill[index].qty <= 0) bill.splice(index, 1);
+  } else if (change > 0) {
+    let finalPrice = price;
+    if (finalPrice === 0) {
+      finalPrice = parseInt(prompt(`Nhập giá cho ${name} (${min}-${max}k)`));
+      if (isNaN(finalPrice)) return;
+    }
+    bill.push({ name, price: finalPrice, qty: 1 });
+  }
+  renderBill();
+
+  const qtyLabel = document.getElementById(`qty-${name.replace(/\s+/g, "")}`);
+  if (qtyLabel) {
+    const currentItem = bill.find((b) => b.name === name);
+    qtyLabel.innerText = currentItem ? currentItem.qty : 0;
+  }
+}
+
+// --- RENDER HÓA ĐƠN ---
+// --- RENDER HÓA ĐƠN (Bản cập nhật) ---
+function renderBill() {
+  const b = document.getElementById("billItems");
+  const customerDisplay = document.getElementById("customerDisplayBill");
+
+  const name = document.getElementById("customerName").value;
+  const phone = document.getElementById("customerPhone").value;
+  const staff = document.getElementById("staffName").value;
+  const note = document.getElementById("note").value;
+
+  customerDisplay.innerHTML = `
+    ${name ? `<div><strong>Khách:</strong> ${name}</div>` : ""}
+    ${phone ? `<div><strong>SĐT:</strong> ${phone}</div>` : ""}
+    ${
+      staff
+        ? `<div style="color:#d4af37"><strong>NV thực hiện:</strong> ${staff}</div>`
+        : ""
+    }
+    ${
+      note
+        ? `<div style="font-style: italic; color: #888; font-size:12px">*Ghi chú: ${note}</div>`
+        : ""
+    }
+  `;
+
+  b.innerHTML = "";
+  let subtotal = 0;
+
+  bill.forEach((i) => {
+    const itemTotal = i.price * i.qty;
+    subtotal += itemTotal;
+    const d = document.createElement("div");
+    d.className = "bill-item";
+
+    // Tìm dữ liệu gốc để lấy min/max nếu cần (cho các dịch vụ giá linh hoạt)
+    const originalGroup = menuData.find((g) =>
+      g.items.find((mi) => mi.name === i.name)
+    );
+    const originalItem = originalGroup
+      ? originalGroup.items.find((mi) => mi.name === i.name)
+      : {};
+
+    d.innerHTML = `
+      <div class="bill-item-left">
+        <span>${i.name}</span>
+        <div class="qty-controls small">
+          <button class="btn-qty" onclick="updateQty('${i.name}', -1, ${
+      i.price
+    }, ${originalItem.min || 0}, ${originalItem.max || 0})">-</button>
+          <span class="qty-val">${i.qty}</span>
+          <button class="btn-qty" onclick="updateQty('${i.name}', 1, ${
+      i.price
+    }, ${originalItem.min || 0}, ${originalItem.max || 0})">+</button>
+        </div>
+      </div>
+      <span>${itemTotal}.000 <button onclick="removeAndSync('${
+      i.name
+    }')" class="btn-remove-item">✕</button></span>
+    `;
+    b.appendChild(d);
+  });
+
+  const disc =
+    parseFloat(document.getElementById("discountPercent").value) || 0;
+  const total = subtotal * (1 - disc / 100);
+
+  const formattedTotal = (total * 1000).toLocaleString("vi-VN");
+  document.getElementById("subtotal").innerText =
+    (subtotal * 1000).toLocaleString("vi-VN") + " VND";
+  document.getElementById("total").innerText = formattedTotal;
+  document.getElementById("stickyTotal").innerText = formattedTotal + " VND";
+}
+
+// --- XỬ LÝ ĐỒNG BỘ ---
+function removeAndSync(name) {
+  const idx = bill.findIndex((i) => i.name === name);
+  if (idx > -1) {
+    lastDeleted = { ...bill[idx] };
+    bill.splice(idx, 1);
+    renderBill();
+    const qtyLabel = document.getElementById(`qty-${name.replace(/\s+/g, "")}`);
+    if (qtyLabel) qtyLabel.innerText = 0;
+  }
 }
 
 function undoDelete() {
   if (lastDeleted) {
-    const exist = bill.find((i) => i.name === lastDeleted.name);
-    if (exist) exist.qty++;
-    else bill.push(lastDeleted);
+    bill.push(lastDeleted);
+    const name = lastDeleted.name;
     lastDeleted = null;
-    renderMenu();
     renderBill();
+    const qtyLabel = document.getElementById(`qty-${name.replace(/\s+/g, "")}`);
+    if (qtyLabel) qtyLabel.innerText = bill.find((b) => b.name === name).qty;
   }
 }
 
 function resetBill() {
-  if (confirm("Xoá toàn bộ đơn?")) {
+  if (confirm("Xoá toàn bộ hoá đơn?")) {
     bill = [];
-    renderMenu();
     renderBill();
+    renderMenu();
   }
 }
 
-function syncInfo() {
-  document.getElementById("pName").innerText =
-    "Khách hàng: " + document.getElementById("customerName").value;
-  document.getElementById("pPhone").innerText =
-    "SĐT: " + document.getElementById("customerPhone").value;
-  document.getElementById("pNote").innerText = document.getElementById("note")
-    .value
-    ? "Ghi chú: " + document.getElementById("note").value
-    : "";
-  document.getElementById("billDate").innerText =
-    "Ngày: " + new Date().toLocaleString("vi-VN");
-}
-
+// --- CHỤP ẢNH ---
 function captureBill() {
-  // 1. Tìm các nút điều khiển trong hóa đơn
-  const controls = document.querySelectorAll(".bill-controls");
-  const qtyTexts = document.querySelectorAll(".capture-qty-text");
+  document.getElementById("currentDate").innerText = new Date().toLocaleString(
+    "vi-VN"
+  );
+  const el = document.getElementById("billCapture");
+  const btns = el.querySelectorAll("button");
+  btns.forEach((b) => (b.style.display = "none"));
 
-  // 2. Ẩn nút, hiện chữ "x Số lượng"
-  controls.forEach((el) => (el.style.display = "none"));
-  qtyTexts.forEach((el) => (el.style.display = "inline"));
-
-  // 3. Cấu hình chụp ảnh (SỬA QUAN TRỌNG: Thêm useCORS và allowTaint để hiện Logo)
-  html2canvas(document.getElementById("billCapture"), {
-    backgroundColor: "#1a1a1a",
-    scale: 3,
-    useCORS: true, // Cho phép tải ảnh từ nguồn khác (quan trọng cho logo)
-    allowTaint: true, // Cho phép vẽ ảnh local
-  }).then((canvas) => {
-    // 4. Hiện lại nút điều khiển sau khi chụp xong
-    controls.forEach((el) => (el.style.display = "flex"));
-    qtyTexts.forEach((el) => (el.style.display = "none"));
-
-    const img = canvas.toDataURL("image/png");
+  html2canvas(el, { backgroundColor: "#000", scale: 2 }).then((c) => {
+    const img = c.toDataURL("image/png");
     const w = window.open("");
-    w.document
-      .write(`<body style="margin:0;background:#000;display:flex;flex-direction:column;align-items:center;justify-content:center;height:100vh;">
-            <img src="${img}" style="max-width:95%;border:1px solid #d4af37;border-radius:10px;">
-            <button onclick="window.close()" style="margin-top:20px;padding:12px 25px;background:#d4af37;border:none;border-radius:5px;font-weight:bold;color:#000;cursor:pointer;">QUAY LẠI</button>
-        </body>`);
+    w.document.write(
+      `<body style="margin:0;background:#000;display:flex;justify-content:center;align-items:center;height:100vh;"><img src="${img}" style="max-width:95%;border-radius:10px;box-shadow:0 0 20px rgba(212,175,55,0.3)"></body>`
+    );
+    btns.forEach((b) => (b.style.display = "inline-block"));
   });
 }
 
-init();
+// --- EVENT LISTENERS ---
+window.onbeforeunload = () => (bill.length > 0 ? true : null);
+document.getElementById("customerName").addEventListener("input", renderBill);
+document.getElementById("customerPhone").addEventListener("input", renderBill);
+document.getElementById("staffName").addEventListener("change", renderBill);
+document.getElementById("note").addEventListener("input", renderBill);
+
+renderMenu();

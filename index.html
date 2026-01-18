@@ -3,75 +3,111 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Beauty Spa - Invoice System</title>
-    <link rel="stylesheet" href="style.css" />
+    <title>Luxury Beauty Spa - Invoice</title>
     <link
-      href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;600&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600&family=Playfair+Display:ital,wght@0,700;1,700&display=swap"
       rel="stylesheet"
     />
+    <link rel="stylesheet" href="style.css" />
   </head>
   <body>
-    <header>
-      <div class="logo-wrapper">
-        <img
-          src="logo.png"
-          alt="Logo"
-          onerror="this.parentElement.style.display='none'"
-        />
-      </div>
-      <h1>BEAUTY SPA</h1>
-    </header>
+    <div class="main-wrapper">
+      <header>
+        <div class="logo-container">
+          <img src="logo.png" alt="Logo" onerror="this.style.display='none'" />
+        </div>
+        <h1 class="gold-glow">Beauty Spa</h1>
+        <p class="subtitle">Elegance in Every Detail</p>
+      </header>
 
-    <div class="container">
-      <div class="section input-card">
-        <input
-          id="customerName"
-          placeholder="Tên khách hàng..."
-          oninput="syncInfo()"
-        />
-        <input
-          id="customerPhone"
-          placeholder="Số điện thoại..."
-          oninput="syncInfo()"
-        />
-        <textarea
-          id="note"
-          placeholder="Ghi chú hoá đơn..."
-          oninput="syncInfo()"
-        ></textarea>
-      </div>
+      <div class="container">
+        <div class="section customer-info">
+          <input id="customerName" placeholder="Tên khách hàng" />
+          <input id="customerPhone" placeholder="Số điện thoại" />
+          <select id="staffName" class="gold-select">
+            <option value="">-- Chọn Kỹ thuật viên --</option>
+            <option value="No1">No1</option>
+            <option value="No2">No2</option>
+            <option value="No3">No3</option>
+          </select>
+          <textarea id="note" placeholder="Ghi chú dịch vụ..."></textarea>
+        </div>
 
-      <div id="menu"></div>
+        <div class="search-container">
+          <input
+            type="text"
+            id="menuSearch"
+            placeholder="🔍 Tìm kiếm dịch vụ..."
+            oninput="filterMenu()"
+          />
+        </div>
 
-      <div id="billCapture" class="bill-output">
-        <div class="bill-header">
-          <div class="logo-wrapper small">
-            <img src="logo.png" alt="Logo" />
+        <div id="menu" class="menu-accordion"></div>
+
+        <div class="bill-wrapper" id="billCapture">
+          <div class="bill-header">
+            <h2 class="gold-glow">HÓA ĐƠN DỊCH VỤ</h2>
+            <div id="currentDate" class="date-display"></div>
           </div>
-          <h2>HOÁ ĐƠN DỊCH VỤ</h2>
-          <div id="billDate"></div>
+
+          <div id="customerDisplayBill" class="customer-bill-info"></div>
+
+          <div id="billItems" class="bill-items"></div>
+
+          <div class="total-section">
+            <div class="discount-row">
+              <span>Tạm tính:</span>
+              <span id="subtotal">0 VND</span>
+            </div>
+            <div class="discount-row">
+              <span>Giảm giá (%):</span>
+              <input
+                type="number"
+                id="discountPercent"
+                value="0"
+                min="0"
+                max="100"
+                oninput="renderBill()"
+              />
+            </div>
+            <div class="total-label">Tổng thanh toán</div>
+            <div class="total-amount gold-glow">
+              <span id="total">0</span> VND
+            </div>
+          </div>
+          <div class="bill-footer">
+            Cảm ơn quý khách đã tin tưởng và sử dụng dịch vụ!
+          </div>
         </div>
 
-        <div class="customer-info-preview">
-          <div id="pName">Khách hàng:</div>
-          <div id="pPhone">SĐT:</div>
-          <div id="pNote"></div>
+        <div class="actions">
+          <button class="btn-secondary undo" onclick="undoDelete()">
+            Hoàn tác
+          </button>
+          <button class="btn-secondary reset" onclick="resetBill()">
+            Làm mới
+          </button>
+          <button class="btn-primary capture" onclick="captureBill()">
+            Xuất hóa đơn (Ảnh)
+          </button>
         </div>
-
-        <div id="billItems"></div>
-
-        <div class="total-row">
-          <span class="label">TỔNG THANH TOÁN</span>
-          <span class="amount"><span id="total">0</span> VND</span>
-        </div>
+        <footer
+          style="
+            margin-bottom: 100px;
+            text-align: center;
+            color: #555;
+            font-size: 12px;
+          "
+        >
+          Đơn vị giá: nghìn đồng (k)
+        </footer>
       </div>
+    </div>
 
-      <div class="actions">
-        <button class="btn-undo" onclick="undoDelete()">Hoàn tác</button>
-        <button class="btn-reset" onclick="resetBill()">Xoá hết</button>
-        <button class="btn-capture" onclick="captureBill()">
-          Xuất Hình Ảnh
-        </button>
+    <div class="sticky-bottom-bar">
+      <div class="sticky-info">
+        <span>Tổng thanh toán:</span>
+        <span id="stickyTotal" class="gold-glow">0 VND</span>
       </div>
     </div>
 

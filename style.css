@@ -1,227 +1,344 @@
 :root {
-  --bg: #0e0e0e;
-  --card: #1a1a1a;
-  --gold: #d4af37;
-  --text: #f5f5f5;
-  --muted: #aaa;
-  --danger: #ff5c5c;
-}
-* {
-  box-sizing: border-box;
-  font-family: "Be Vietnam Pro", sans-serif;
-}
-body {
-  margin: 0;
-  background: var(--bg);
-  color: var(--text);
-  padding-bottom: 50px;
+  --bg: #0a0a0a;
+  --card: #161616;
+  --gold-metallic: linear-gradient(
+    135deg,
+    #bf953f,
+    #fcf6ba,
+    #b38728,
+    #fbf5b7,
+    #aa771c
+  );
+  --gold-solid: #d4af37;
+  --gold-light: #e0c08d;
+  --text: #ffffff;
+  --muted: #888;
+  --danger: #ff4d4d;
 }
 
-/* LOGO NỀN TRẮNG */
-.logo-wrapper {
-  background: #fff;
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 5px;
+}
+::-webkit-scrollbar-track {
+  background: var(--bg);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--gold-solid);
+  border-radius: 10px;
+}
+
+* {
+  box-sizing: border-box;
+  -webkit-tap-highlight-color: transparent;
+}
+
+body {
+  margin: 0;
+  font-family: "Montserrat", sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.6;
+}
+
+.main-wrapper {
+  max-width: 500px;
+  margin: 0 auto;
+  min-height: 100vh;
+  padding-bottom: 40px;
+}
+
+/* Hiệu ứng Glow cho Gold */
+.gold-glow {
+  background: var(--gold-metallic);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  filter: drop-shadow(0 0 2px rgba(212, 175, 55, 0.5));
+  font-weight: bold;
   display: inline-block;
-  padding: 10px 20px;
-  border-radius: 12px;
-  margin-bottom: 10px;
-  border: 1px solid rgba(212, 175, 55, 0.3);
-}
-.logo-wrapper img {
-  height: 60px;
-  display: block;
-  object-fit: contain;
-}
-.logo-wrapper.small img {
-  height: 40px;
 }
 
 header {
   text-align: center;
-  padding: 20px 0;
+  padding: 40px 20px 20px;
+  background: linear-gradient(to bottom, #1a1a1a, var(--bg));
 }
-header h1 {
+
+.logo-container img {
+  height: 70px;
+  margin-bottom: 15px;
+  filter: drop-shadow(0 0 5px rgba(212, 175, 55, 0.5));
+}
+
+h1 {
+  font-family: "Playfair Display", serif;
   margin: 0;
-  font-size: 20px;
-  color: var(--gold);
+  font-size: 28px;
   letter-spacing: 2px;
   text-transform: uppercase;
 }
 
-.container {
-  max-width: 500px;
-  margin: 0 auto;
-  padding: 15px;
-}
-.input-card {
-  background: var(--card);
-  padding: 15px;
-  border-radius: 12px;
-  margin-bottom: 20px;
-  border: 1px solid #333;
-}
-.input-card input,
-.input-card textarea {
-  width: 100%;
-  padding: 10px;
-  border-radius: 8px;
-  border: 1px solid #333;
-  background: #252525;
-  color: #fff;
-  margin-bottom: 8px;
-  outline: none;
-}
-
-.section-title {
-  color: var(--gold);
-  margin: 25px 0 10px;
+.subtitle {
+  font-size: 10px;
+  letter-spacing: 4px;
+  color: var(--muted);
+  margin: 5px 0 0;
   text-transform: uppercase;
-  font-weight: 600;
-  border-left: 3px solid var(--gold);
-  padding-left: 10px;
 }
 
-/* MENU & CONTROLS */
-.menu-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 10px;
-}
-.menu-item {
-  background: var(--card);
-  padding: 12px;
-  border-radius: 12px;
-  border: 1px solid #222;
-}
-.menu-item .name {
-  font-size: 13px;
-  margin-bottom: 5px;
-  display: block;
-  min-height: 32px;
-}
-.menu-item .price {
-  color: var(--gold);
-  font-weight: 600;
-  font-size: 14px;
+.container {
+  padding: 20px;
 }
 
-.controls {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-top: 10px;
-}
-.btn-qty {
-  background: #333;
-  border: none;
-  color: #fff;
-  width: 28px;
-  height: 28px;
-  border-radius: 6px;
-  cursor: pointer;
-  font-weight: bold;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 16px;
-}
-.btn-qty.plus {
-  background: var(--gold);
-  color: #000;
-}
-.qty-val {
-  font-weight: bold;
-  color: var(--gold);
-  min-width: 20px;
-  text-align: center;
-}
-
-/* BILL OUTPUT */
-.bill-output {
+.customer-info,
+.search-container {
   background: var(--card);
   padding: 20px;
   border-radius: 15px;
+  border: 1px solid #222;
+  margin-bottom: 20px;
+}
+
+input,
+textarea,
+.gold-select {
+  width: 100%;
+  background: #222;
   border: 1px solid #333;
-  margin-top: 30px;
+  color: white;
+  padding: 12px;
+  border-radius: 8px;
+  margin-bottom: 10px;
+  font-family: inherit;
 }
-.bill-header {
-  text-align: center;
-  border-bottom: 1px dashed #444;
-  padding-bottom: 15px;
-  margin-bottom: 15px;
+
+.gold-select {
+  color: var(--gold-solid);
+  cursor: pointer;
+  appearance: none;
 }
-.bill-item {
+
+/* Accordion Animation */
+.accordion-item {
+  border-bottom: 1px solid #222;
+  overflow: hidden;
+}
+
+.accordion-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 10px 0;
-  border-bottom: 1px solid #282828;
+  padding: 15px 10px;
+  cursor: pointer;
+  transition: background 0.3s;
 }
-.bill-item-info {
+
+.accordion-header:hover {
+  background: #1a1a1a;
+}
+
+.accordion-header::after {
+  content: "▼";
+  font-size: 20px;
+  color: var(--gold-solid);
+  transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.accordion-item.active .accordion-header::after {
+  transform: rotate(180deg);
+}
+
+.accordion-content {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  background: #0d0d0d;
+}
+
+.accordion-item.active .accordion-content {
+  max-height: 2000px;
+}
+
+.menu-item {
   display: flex;
-  flex-direction: column;
-  gap: 2px;
+  justify-content: space-between;
+  align-items: center;
+  padding: 14px 15px;
+  border-bottom: 1px solid #1a1a1a;
 }
-.bill-item-name {
-  font-size: 14px;
-}
-.bill-item-sub {
-  font-size: 11px;
-  color: var(--muted);
-}
-.bill-item-right {
+
+.qty-controls {
   display: flex;
   align-items: center;
   gap: 12px;
 }
-.bill-price {
-  font-weight: 600;
-  color: var(--gold);
+
+.btn-qty {
+  background: #333;
+  border: 1px solid var(--gold-solid);
+  color: var(--gold-solid);
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
-.total-row {
-  margin-top: 15px;
+/* Bill Design */
+.bill-wrapper {
+  background: #000;
+  padding: 30px 20px;
+  border: 1px solid var(--gold-solid);
+  margin-top: 30px;
+  box-shadow: 0 0 15px rgba(191, 149, 63, 0.1);
+}
+
+.bill-header {
+  text-align: center;
+  margin-bottom: 20px;
+  border-bottom: 1px solid #333;
+  padding-bottom: 15px;
+}
+
+.bill-item {
+  display: flex;
+  justify-content: space-between;
+  font-size: 13px;
+  margin-bottom: 8px;
+  border-bottom: 1px dashed #222;
+  padding-bottom: 5px;
+}
+
+.total-section {
+  margin-top: 20px;
+  padding-top: 15px;
+  border-top: 2px solid var(--gold-solid);
+}
+
+.discount-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 14px;
+  margin-bottom: 10px;
+}
+
+#discountPercent {
+  width: 60px;
+  margin-bottom: 0;
+  padding: 5px;
+  text-align: center;
+  border-color: var(--gold-solid);
+}
+
+.total-amount {
+  font-size: 26px;
   text-align: right;
-  border-top: 2px solid var(--gold);
-  padding-top: 10px;
-}
-.total-row .amount {
-  font-size: 24px;
-  color: var(--gold);
-  font-weight: bold;
-  display: block;
 }
 
+/* Sticky Bottom Bar */
+.sticky-bottom-bar {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: rgba(10, 10, 10, 0.95);
+  backdrop-filter: blur(10px);
+  padding: 15px 20px;
+  border-top: 1px solid var(--gold-solid);
+  z-index: 999;
+  display: flex;
+  justify-content: center;
+}
+
+.sticky-info {
+  width: 100%;
+  max-width: 500px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-weight: 600;
+}
+
+/* Buttons */
 .actions {
   display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
-  gap: 8px;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
   margin-top: 20px;
 }
-.actions button {
-  padding: 12px;
-  border: none;
-  border-radius: 8px;
-  font-weight: bold;
-  cursor: pointer;
-}
-.btn-undo {
-  background: #333;
-  color: #ccc;
-}
-.btn-reset {
-  background: #422;
-  color: #fbb;
-}
-.btn-capture {
-  background: var(--gold);
+
+.btn-primary {
+  grid-column: span 2;
+  background: var(--gold-metallic);
   color: #000;
+  border: none;
+  padding: 16px;
+  border-radius: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  cursor: pointer;
+  margin-top: 10px;
 }
 
-.no-capture {
-  display: none !important;
+.btn-secondary {
+  background: #222;
+  color: #fff;
+  border: 1px solid #444;
+  padding: 12px;
+  border-radius: 8px;
+  cursor: pointer;
 }
-.capture-qty-text {
-  display: none;
+
+.btn-secondary.undo {
+  color: var(--gold-light);
+}
+.btn-secondary.reset {
+  color: var(--danger);
+}
+/* Tùy chỉnh nút trong hóa đơn */
+.bill-item {
+  align-items: center; /* Căn giữa theo chiều dọc */
+}
+
+.bill-item-left {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.qty-controls.small .btn-qty {
+  width: 22px;
+  height: 22px;
+  font-size: 12px;
+}
+
+.qty-controls.small .qty-val {
   font-size: 13px;
-  color: var(--muted);
+  min-width: 15px;
+  text-align: center;
+}
+
+.btn-remove-item {
+  background: none;
+  border: none;
+  color: var(--danger);
+  margin-left: 8px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+/* Ẩn các nút điều khiển khi chụp ảnh hóa đơn */
+#billCapture .btn-qty,
+#billCapture .btn-remove-item {
+  transition: opacity 0.2s;
+}
+.logo-container img {
+  height: 90px;
+  border-radius: 50px; /* Tạo hình nhộng/oval */
+  border: 2px solid var(--gold-solid);
+  object-fit: contain;
+  padding: 5px;
 }
